@@ -1,0 +1,32 @@
+[window]
+decorations = "Full"
+decorations_theme_variant = "Dark"
+blur = true
+opacity = 0.9
+padding = { x = 5, y = 5 }
+dynamic_padding = true
+
+[scrolling]
+history = 100000
+
+[font]
+normal = { family = "CaskaydiaMonoNerdFont", style = "Regular"}
+size = 12
+
+[cursor]
+style = {blinking = "On"}
+
+[mouse]
+bindings = [
+    # { mouse = "Right", action = "Copy"},
+    # { mouse = "Middle", action="Paste"},
+    { mouse = "Right", action = "Paste"},
+    { mouse = "Middle", action="Copy"},
+]
+
+[keyboard]
+bindings = [
+    { key = "V", mods = "Control", action="Paste"},
+    { key="F11", action="ToggleFullscreen"},
+    { key="F11", mods = "Control", action="ToggleMaximized"}
+]
