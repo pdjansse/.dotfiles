@@ -75,3 +75,26 @@ case $TERM in
             ;;
     esac
 
+# nnn config
+export NNN_FIFO='/tmp/nnn.fifo'
+export NNN_COLORS='4123'
+
+BLK="0B" CHR="0B" DIR="02" EXE="00" REG="00" HARDLINK="06" SYMLINK="06" MISSING="07" ORPHAN="01" FIFO="0F" SOCK="0F" OTHER="04"
+export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
+
+n () {
+    # Block nesting of nnn in subshells
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    nnn -o -U "$@" 
+
+    if [ -f "$NNN_TMPFILE" ]; then
+            . "$NNN_TMPFILE"
+            rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+}
