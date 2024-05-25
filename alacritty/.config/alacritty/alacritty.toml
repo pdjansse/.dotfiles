@@ -11,7 +11,7 @@ history = 100000
 
 [font]
 normal = { family = "CaskaydiaMonoNerdFont", style = "Regular"}
-size = 12
+size = 14
 
 [cursor]
 style = {blinking = "On"}
