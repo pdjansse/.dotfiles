@@ -18,10 +18,10 @@ style = {blinking = "On"}
 
 [mouse]
 bindings = [
-    # { mouse = "Right", action = "Copy"},
-    # { mouse = "Middle", action="Paste"},
-    { mouse = "Right", action = "Paste"},
-    { mouse = "Middle", action="Copy"},
+    { mouse = "Right", action = "Copy"},
+    { mouse = "Middle", action="Paste"},
+    # { mouse = "Right", action = "Paste"},
+    # { mouse = "Middle", action="Copy"},
 ]
 
 [keyboard]
