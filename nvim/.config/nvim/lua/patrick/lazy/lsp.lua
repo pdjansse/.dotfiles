@@ -3,14 +3,18 @@ return {
     dependencies = {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        "hrsh7th/nvim-cmp",
         "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
+        "hrsh7th/nvim-cmp",
         "L3MON4D3/LuaSnip",
+        "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
     },
     config = function()
         require("fidget").setup({}) -- Enable Fancy Messages
-        
+
         vim.api.nvim_create_autocmd('LspAttach', {
             desc = 'LSP actions',
             callback = function(event)
@@ -32,29 +36,28 @@ return {
             end
         })
 
-        -- Setup default lsp handler
-        local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+        local cmp = require('cmp')
+        local cmp_lsp = require('cmp_nvim_lsp')
+        local capabilities = vim.tbl_deep_extend(
+            "force",
+            {},
+            vim.lsp.protocol.make_client_capabilities(),
+            cmp_lsp.default_capabilities()
+        )
+
         local default_setup = function(server)
             require('lspconfig')[server].setup({
-                capabilities = lsp_capabilities,
+                capabilities = capabilities,
             })
         end
         local lua_ls = function()
             require('lsponfig').lua_ls.setup({
-                capabilities = lsp_capabilities,
+                capabilities = capabilities,
                 settings = {
                     Lua = {
-                        runtime = {
-                            version = 'LuaJIT'
-                        },
-                        diagonostics = {
-                            globals = {'vim'},
-                        },
-                        workspace = {
-                            library = {
-                                vim.env.VIMRUNTIME,
-                            }
-                        }
+                        runtime = {version = 'LuaJIT'},
+                        diagonostics = { globals = {'vim'} },
+                        workspace = { library = { vim.env.VIMRUNTIME } }
                     }
                 }
             })
@@ -74,11 +77,16 @@ return {
 
         -- Setup Compilations
         local cmp = require('cmp')
-        
+
         cmp.setup({
-            source = {
-                {name = 'nvim_lsp'},
-            },
+             sources = cmp.config.sources({
+                { name = 'nvim_lsp' },
+                { name = 'luasnip' }, -- For luasnip users.
+                { name = 'path' },
+            }, {
+                { name = 'buffer' },
+            }),
+
 
             mapping = cmp.mapping.preset.insert({
                 -- Enter key confirms completion item
@@ -94,6 +102,5 @@ return {
                 end,
             }
         })
-        
     end
 }
