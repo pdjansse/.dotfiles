@@ -25,6 +25,11 @@ setopt HIST_VERIFY
 # Aliases
 alias ls='ls --color=auto'
 
+alias gs='git status'
+alias gc='git commit -m'
+alias gp='git pull'
+alias gP='git push'
+
 # Colors
 autoload -Uz colors && colors
 
