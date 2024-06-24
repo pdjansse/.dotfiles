@@ -22,9 +22,8 @@ vim.opt.wrap = false
 
 
 -- Search Options
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
-
+vim.opt.hlsearch = true
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Fancy Colors
 vim.termguicolors = true
@@ -39,7 +38,7 @@ vim.opt.updatetime = 250
 
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true 
 
 
 -- Don't show the mode, since it's already in the status line
@@ -49,8 +48,16 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
 
+-- yanking highlight
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
@@ -60,4 +67,8 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 
 -- Show which line your cursor is on
--- vim.opt.cursorline = true
+vim.opt.cursorline = true
+
+
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
