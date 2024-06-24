@@ -64,7 +64,7 @@ promptinit
 
 # Define the theme
 prompt_mytheme_setup() {
-    PS1="%F{green}%n@%m%F{white}:%F{blue}%~%F{white}%% "
+    PS1="%F{blue}%~%F{white}%% "
 }
 
 # Add the theme to promptsys
