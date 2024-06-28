@@ -16,6 +16,9 @@ history = 100000
 normal = { family = "CaskaydiaMonoNerdFont", style = "Regular"}
 size = 14
 
+[colors]
+transparent_background_colors = true
+
 [cursor]
 style = {blinking = "On"}
 
