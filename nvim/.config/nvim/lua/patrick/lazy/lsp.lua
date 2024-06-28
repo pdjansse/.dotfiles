@@ -220,6 +220,7 @@ return { -- LSP Configuration & Plugins
                 settings = {
                     basedpyright = {
                         disableOrganizeImports = true,
+                        typeCheckingMode = "off",
                     },
                     python = {
                         analysis = {
