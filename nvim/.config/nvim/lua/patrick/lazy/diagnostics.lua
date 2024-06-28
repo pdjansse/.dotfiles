@@ -1,12 +1,12 @@
 return {
-    'dgagn/diagflow.nvim',
-    event = 'LspAttach',
-    config = function ()
-        require('diagflow').setup({
-            placement = 'inline',
+    "dgagn/diagflow.nvim",
+    event = "LspAttach",
+    config = function()
+        require("diagflow").setup({
+            placement = "inline",
             inline_padding_left = 3,
-            scope = 'line',
+            scope = "line",
             show_sign = false,
         })
-    end
+    end,
 }
