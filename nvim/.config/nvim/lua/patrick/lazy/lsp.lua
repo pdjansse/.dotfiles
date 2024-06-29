@@ -216,6 +216,8 @@ return { -- LSP Configuration & Plugins
             -- But for many setups, the LSP (`tsserver`) will work just fine
             -- tsserver = {},
             --
+            dockerls = {},
+            docker_compose_language_service = {},
             basedpyright = {
                 settings = {
                     basedpyright = {
