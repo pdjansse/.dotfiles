@@ -34,7 +34,7 @@ vim.opt.updatetime = 250
 vim.g.have_nerd_font = true
 
 -- Don't show the mode, since it's already in the status line
-vim.opt.showmode = false
+-- vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -61,3 +61,7 @@ vim.opt.cursorline = true
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+--
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undofile = true
