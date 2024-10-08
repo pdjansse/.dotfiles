@@ -8,6 +8,11 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
+# golang
+if [ -d "/usr/local/go/bin" ] ; then
+    PATH="/usr/local/go/bin:$PATH"
+fi
+
 # WSL
 if [ -d "/mnt/c/Users/Patrick/AppData/Local/Programs/Microsoft VS Code/bin/" ] ; then
     PATH="/mnt/c/Users/Patrick/AppData/Local/Programs/Microsoft VS Code/bin/:$PATH"
