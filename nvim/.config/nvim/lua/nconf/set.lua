@@ -23,7 +23,6 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = undodir_path
 vim.opt.undofile = true
-vim.opt.clipboard = "unnamed"
 
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
