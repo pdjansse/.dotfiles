@@ -1,5 +1,5 @@
 if vim.g.vscode then
-    -- pass
+    require("nconf.remap")
 else
     vim.g.mapleader = " "
     require("nconf.lazy_init")
