@@ -76,7 +76,7 @@ prompt_themes+=( mytheme )
 # Load the theme
 prompt mytheme
 
-# Termnal Title
+# Terminal Title
 case $TERM in
         xterm*)
             precmd () {print -Pn "\e]0;${PWD/$HOME/\~}\a"}
@@ -110,3 +110,12 @@ n () {
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
+
+eval `keychain --agents ssh --eval id_ed25519 --quiet`
+
+# fnm
+FNM_PATH="/home/patrick/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/patrick/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
