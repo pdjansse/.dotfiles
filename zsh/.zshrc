@@ -24,6 +24,9 @@ setopt HIST_VERIFY
 
 # Aliases
 alias ls='ls --color=auto'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 
 alias gs='git status'
 alias gc='git commit -m'
