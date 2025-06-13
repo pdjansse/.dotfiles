@@ -22,6 +22,11 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 
+# Keybinds 
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+bindkey '^H' backward-kill-word
+
 # Aliases
 alias ls='ls --color=auto'
 alias ll='ls -alF'
@@ -36,7 +41,7 @@ alias gP='git push'
 # Colors
 autoload -Uz colors && colors
 
-# Load and initialise completion system
+# Load and initialize completion system
 autoload -Uz compinit
 zstyle ':completion:*' menu yes select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'

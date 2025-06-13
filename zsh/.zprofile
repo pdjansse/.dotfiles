@@ -16,11 +16,6 @@ if [ -d "$HOME/go/bin" ] ; then
     PATH="$HOME/go/bin:$PATH"
 fi
 
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
 # WSL
 if [ -d "/mnt/c/Users/Patrick/AppData/Local/Programs/Microsoft VS Code/bin/" ] ; then
     PATH="/mnt/c/Users/Patrick/AppData/Local/Programs/Microsoft VS Code/bin/:$PATH"
