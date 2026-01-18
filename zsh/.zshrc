@@ -19,7 +19,6 @@ setopt BANG_HIST
 setopt EXTENDED_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_FIND_NO_DUPS
-setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 
 # Keybinds 
@@ -37,6 +36,13 @@ alias gs='git status'
 alias gc='git commit -m'
 alias gp='git pull'
 alias gP='git push'
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+export EDITOR='nvim'
+export VISUAL='nvim'
 
 # Colors
 autoload -Uz colors && colors
