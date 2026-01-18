@@ -20,7 +20,6 @@ return {
             map("n", "<leader>hR", gs.reset_buffer, "Reset Buffer")
             map("n", "<leader>hp", gs.preview_hunk, "Preview Hunk")
             map("n", "<leader>tb", gs.toggle_current_line_blame, "Toggle Blame")
-            map("n", "<leader>hd", gs.diffthis, "Diff This")
             map("n", "<leader>td", gs.toggle_deleted, "Toggle Deleted")
 
             -- Text object
