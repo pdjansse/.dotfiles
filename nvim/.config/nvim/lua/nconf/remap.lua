@@ -20,7 +20,10 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
-vim.api.nvim_create_user_command("W", "write", {})
+-- Fast write & exit
+vim.keymap.set("n", "<leader>w", "<cmd>write<cr>", { desc = "Save File" })
+vim.keymap.set("n", "<leader>q", "<cmd>quit<cr>", { desc = "Quit Neovim" })
+
 
 -- lsp actions
 vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", { desc = "Hover" })
