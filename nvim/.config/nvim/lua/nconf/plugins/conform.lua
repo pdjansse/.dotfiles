@@ -19,10 +19,10 @@ return {
         formatters_by_ft = {
             lua = { "stylua" },
             python = { "ruff_organize_imports", "ruff_format" },
+            cpp = { "clang-format" },
+            sh = { "shfmt"},
+            bash = { "shfmt"},
         },
-        -- Set up format-on-save
-        format_on_save = { timeout_ms = 500 },
-        -- Customize formatters
         formatters = {},
     },
     init = function()
