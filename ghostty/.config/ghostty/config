@@ -1,0 +1,18 @@
+command = "/usr/bin/zsh -l"
+
+font-family = "CaskaydiaMono Nerd Font Mono"
+font-size = 14
+
+theme = "Atom One Dark"
+
+background-opacity= 0.9
+background-blur=true
+
+keybind = F11=toggle_fullscreen
+
+desktop-notifications = false
+clipboard-read = allow
+clipboard-write = allow
+clipboard-paste-protection = false
+
+app-notifications = no-clipboard-copy
