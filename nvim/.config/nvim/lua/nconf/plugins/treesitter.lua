@@ -1,29 +1,46 @@
+vim.filetype.add({
+    extension = {
+        vala = "vala",
+        vapi = "vala",
+    },
+})
+
 return {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     build = ":TSUpdate",
 
     config = function()
-        require("nvim-treesitter.config").setup({
-            ensure_installed = {
-                "lua",
-                "vim",
-                "vimdoc",
-                "c",
-                "python",
-                "bash",
-                "go",
-                "query",
-            },
-            sync_install = false,
-            auto_install = true,
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = false,
-            },
-            indent = {
-                enable = true,
-                disable = { "python", "c" },
-            },
+        require("nvim-treesitter").install({
+            "lua",
+            "vim",
+            "vimdoc",
+            "c",
+            "cpp",
+            "json",
+            "toml",
+            "yaml",
+            "python",
+            "bash",
+            "zsh",
+            "go",
+            "query",
+            "vala",
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "*",
+            callback = function(args)
+                pcall(vim.treesitter.start, args.buf)
+            end,
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = { "lua", "vim", "vimdoc", "bash", "go", "query", "vala" },
+            callback = function(args)
+                vim.bo[args.buf].indentexpr =
+                    "v:lua.require'nvim-treesitter'.indentexpr()"
+            end,
         })
     end,
 }

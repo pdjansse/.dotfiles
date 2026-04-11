@@ -20,10 +20,19 @@ return {
             lua = { "stylua" },
             python = { "ruff_organize_imports", "ruff_format" },
             cpp = { "clang-format" },
-            sh = { "shfmt"},
-            bash = { "shfmt"},
+            sh = { "shfmt" },
+            bash = { "shfmt" },
+            rust = { "rustfmt", lsp_format = "fallback" },
+            vala = { "uncrustify" },
         },
-        formatters = {},
+        formatters = {
+            uncrustify = {
+                prepend_args = {
+                    "-c",
+                    vim.fn.expand("~/.config/uncrustify/uncrustify.cfg"),
+                },
+            },
+        },
     },
     init = function()
         -- If you want the formatexpr, here is the place to set it
