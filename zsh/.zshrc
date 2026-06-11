@@ -21,6 +21,11 @@ setopt SHARE_HISTORY
 setopt HIST_FIND_NO_DUPS
 setopt HIST_VERIFY
 
+export EDITOR='nvim'
+export VISUAL='nvim'
+
+bindkey -e
+
 # Keybinds 
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
@@ -41,8 +46,6 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^x^e' edit-command-line
 
-export EDITOR='nvim'
-export VISUAL='nvim'
 
 # Colors
 autoload -Uz colors && colors
@@ -122,11 +125,8 @@ n () {
     fi
 }
 
-eval `keychain --agents ssh --eval id_ed25519 --quiet`
 
-# fnm
-FNM_PATH="/home/patrick/.local/share/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="/home/patrick/.local/share/fnm:$PATH"
-  eval "`fnm env`"
-fi
+. "$HOME/.local/bin/env"
+
+# opencode
+export PATH=/home/janssen/.opencode/bin:$PATH

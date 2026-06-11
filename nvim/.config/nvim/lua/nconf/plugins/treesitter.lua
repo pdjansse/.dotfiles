@@ -18,6 +18,7 @@ return {
             "c",
             "cpp",
             "json",
+            "markdown",
             "toml",
             "yaml",
             "python",

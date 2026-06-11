@@ -1,7 +1,9 @@
 command = "/usr/bin/zsh -l"
 
-font-family = "CaskaydiaMono Nerd Font Mono"
+font-family = "CaskaydiaMono Nerd Font"
 font-size = 14
+
+cursor-style = block
 
 theme = "Atom One Dark"
 
