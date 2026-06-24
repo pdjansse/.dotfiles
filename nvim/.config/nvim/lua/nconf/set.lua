@@ -29,5 +29,59 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+-- folds
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.viewoptions = { "cursor", "folds" }
+
+-- Save the fold view when leaving a buffer or closing a window
+local fold_group = vim.api.nvim_create_augroup("RememberFolds", { clear = true })
+vim.api.nvim_create_autocmd({ "BufWinLeave", "BufWritePost", "WinLeave" }, {
+    group = fold_group,
+    pattern = "*",
+    callback = function()
+        -- Only save views for actual, editable files on disk
+        if vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
+            vim.cmd("silent! mkview")
+        end
+    end,
+})
+
+-- Load the fold view when entering a buffer
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+    group = fold_group,
+    pattern = "*",
+    callback = function()
+        if vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
+            vim.cmd("silent! loadview")
+        end
+    end,
+})
+
 -- No automatic comment insertion
 vim.cmd([[autocmd FileType * set formatoptions-=ro]])
+
+-- Sync yank buffers between nvim instances
+local sync_shada_grp =
+    vim.api.nvim_create_augroup("SyncShadaRegisters", { clear = true })
+
+vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+    group = sync_shada_grp,
+    desc = "Write yanked registers to ShaDa file immediately",
+    callback = function()
+        -- Only sync actual yanks (ignore deletions/changes)
+        if vim.v.event.operator == "y" then
+            vim.cmd("wshada")
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+    group = sync_shada_grp,
+    desc = "Read fresh registers from ShaDa when switching back to Neovim",
+    callback = function()
+        vim.cmd("rshada")
+    end,
+})

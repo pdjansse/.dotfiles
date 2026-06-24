@@ -24,8 +24,14 @@ return {
             bash = { "shfmt" },
             rust = { "rustfmt", lsp_format = "fallback" },
             vala = { "uncrustify" },
+            odin = { "odinfmt" },
         },
         formatters = {
+            odinfmt = {
+                command = "odinfmt",
+                args = { "-stdin" },
+                stdin = true,
+            },
             uncrustify = {
                 prepend_args = {
                     "-c",

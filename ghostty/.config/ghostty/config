@@ -11,6 +11,7 @@ background-opacity= 0.9
 background-blur=true
 
 keybind = F11=toggle_fullscreen
+keybind = shift+enter=csi:13;2u
 
 desktop-notifications = false
 clipboard-read = allow
