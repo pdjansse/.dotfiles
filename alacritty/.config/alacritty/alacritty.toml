@@ -1,6 +1,10 @@
 [env]
 WINIT_X11_SCALE_FACTOR = '1.0'
-COLORTERM= "truecolor"
+COLORTERM = "truecolor"
+
+[terminal.shell]
+program = "/usr/bin/zsh"
+args = ["-l"]
 
 [window]
 decorations = "Full"
@@ -14,11 +18,43 @@ dynamic_padding = true
 history = 100000
 
 [font]
-normal = { family = "CaskaydiaMonoNerdFont", style = "Regular"}
+normal = { family = "CaskaydiaMono Nerd Font", style = "Regular" }
 size = 14
 
 [colors]
 transparent_background_colors = true
+
+[colors.primary]
+background = "#21252b"
+foreground = "#abb2bf"
+
+[colors.cursor]
+text = "#21252b"
+cursor = "#abb2bf"
+
+[colors.selection]
+text = "#abb2bf"
+background = "#323844"
+
+[colors.normal]
+black = "#21252b"
+red = "#e06c75"
+green = "#98c379"
+yellow = "#e5c07b"
+blue = "#61afef"
+magenta = "#c678dd"
+cyan = "#56b6c2"
+white = "#abb2bf"
+
+[colors.bright]
+black = "#767676"
+red = "#e06c75"
+green = "#98c379"
+yellow = "#e5c07b"
+blue = "#61afef"
+magenta = "#c678dd"
+cyan = "#56b6c2"
+white = "#abb2bf"
 
 [cursor]
 style = {blinking = "On"}
