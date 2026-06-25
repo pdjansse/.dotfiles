@@ -1,6 +1,4 @@
-[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
-plug "zsh-users/zsh-autosuggestions"
-plug "zsh-users/zsh-syntax-highlighting"
+source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/plug.zsh"
 
 # Options
 unsetopt BEEP
@@ -46,6 +44,7 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^x^e' edit-command-line
 
+plug "zsh-users/zsh-autosuggestions"
 
 # Colors
 autoload -Uz colors && colors
@@ -58,44 +57,49 @@ zstyle ':completion:*' list-colors '${(s.:.)LS_COLORS}'
 zmodload zsh/complist
 _comp_options+=(globdots)		# Include hidden files.
 zle_highlight=('paste:none')
-for dump in "${ZDOTDIR:-$HOME}/.zcompdump"(N.mh+24); do
-    compinit
-done
-compinit -C
 
-## Prompt
-
-# Check for a Debian chroot environment
-if [[ -r /etc/debian_chroot ]]; then
-    debian_chroot="$(cat /etc/debian_chroot)"
+_zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+_zcompdump_stale=( "$_zcompdump"(N.mh+24) )
+if [[ ! -s "$_zcompdump" || $#_zcompdump_stale -gt 0 ]]; then
+    compinit -d "$_zcompdump"
+else
+    compinit -C -d "$_zcompdump"
 fi
+unset _zcompdump _zcompdump_stale
 
-# Function to set terminal title
-set_title() {
-  echo -ne "\033]0;${PWD}\007"
-}
+# GStreamer ships bash completions; load them through zsh's bash bridge.
+_gst_completion_dir="/usr/share/bash-completion/completions"
+if [[ -r "$_gst_completion_dir/gst-launch-1.0" || -r "$_gst_completion_dir/gst-inspect-1.0" ]]; then
+    autoload -Uz bashcompinit
+    bashcompinit
+
+    _source_bash_completion() {
+        emulate -L zsh
+        setopt ksh_arrays
+
+        local completion_file="$1"
+        local -a BASH_SOURCE=("$completion_file")
+        source "$completion_file"
+    }
+
+    [[ -r "$_gst_completion_dir/gst-launch-1.0" ]] && _source_bash_completion "$_gst_completion_dir/gst-launch-1.0"
+    [[ -r "$_gst_completion_dir/gst-inspect-1.0" ]] && _source_bash_completion "$_gst_completion_dir/gst-inspect-1.0"
+
+    unfunction _source_bash_completion
+fi
+unset _gst_completion_dir
 
 # Prompt
-autoload -Uz promptinit
-promptinit
-
-# Define the theme
-prompt_mytheme_setup() {
-    PS1="%F{blue}%~%F{white}%% "
-}
-
-# Add the theme to promptsys
-prompt_themes+=( mytheme )
-
-# Load the theme
-prompt mytheme
+PROMPT="%F{blue}%~%F{white}%% %f"
 
 # Terminal Title
 case $TERM in
-        xterm*)
-            precmd () {print -Pn "\e]0;${PWD/$HOME/\~}\a"}
-            ;;
-    esac
+    alacritty*|tmux*|xterm*)
+        autoload -Uz add-zsh-hook
+        _set_terminal_title() { print -Pn "\e]0;${PWD/$HOME/\~}\a" }
+        add-zsh-hook precmd _set_terminal_title
+        ;;
+esac
 
 # nnn config
 export NNN_FIFO='/tmp/nnn.fifo'
@@ -108,29 +112,52 @@ export NNN_BMS="h:$HOME;d:$HOME/dev/;c:$HOME/.dotfiles/;"
 BLK="0B" CHR="0B" DIR="02" EXE="00" REG="00" HARDLINK="06" SYMLINK="06" MISSING="07" ORPHAN="01" FIFO="0F" SOCK="0F" OTHER="04"
 export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
 
-n () {
+n() {
     # Block nesting of nnn in subshells
-    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+    if [[ -n "$NNNLVL" && "${NNNLVL:-0}" -ge 1 ]]; then
         echo "nnn is already running"
         return
     fi
+    if ! command -v nnn > /dev/null 2>&1; then
+        echo "nnn is not installed"
+        return 1
+    fi
 
-    NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    local NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
 
     nnn -H -o -U "$@" 
 
-    if [ -f "$NNN_TMPFILE" ]; then
-            . "$NNN_TMPFILE"
-            rm -f "$NNN_TMPFILE" > /dev/null
+    if [[ -f "$NNN_TMPFILE" ]]; then
+        source "$NNN_TMPFILE"
+        rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
 
 
-. "$HOME/.local/bin/env"
+[[ -r "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 
 # opencode
-export PATH=/home/janssen/.opencode/bin:$PATH
+if [[ -d "$HOME/.opencode/bin" ]]; then
+    case ":$PATH:" in
+        *:"$HOME/.opencode/bin":*) ;;
+        *) export PATH="$HOME/.opencode/bin:$PATH" ;;
+    esac
+fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+    _load_nvm() {
+        unfunction nvm node npm npx corepack 2> /dev/null
+        source "$NVM_DIR/nvm.sh"
+        [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+        "$@"
+    }
+
+    nvm() { _load_nvm nvm "$@" }
+    node() { _load_nvm node "$@" }
+    npm() { _load_nvm npm "$@" }
+    npx() { _load_nvm npx "$@" }
+    corepack() { _load_nvm corepack "$@" }
+fi
+
+plug "zsh-users/zsh-syntax-highlighting"
