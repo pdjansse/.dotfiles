@@ -42,7 +42,12 @@ alias gP='git push'
 
 autoload -Uz edit-command-line
 zle -N edit-command-line
-bindkey '^x^e' edit-command-line
+_edit_command_line_transform() {
+    local -x NVIM_ZSH_TRANSFORM=1
+    zle edit-command-line
+}
+zle -N edit-command-line-transform _edit_command_line_transform
+bindkey '^T' edit-command-line-transform
 
 plug "zsh-users/zsh-autosuggestions"
 
@@ -66,6 +71,18 @@ else
     compinit -C -d "$_zcompdump"
 fi
 unset _zcompdump _zcompdump_stale
+
+# fzf installs Ctrl-T by default; keep that key reserved for zsh transform.
+if command -v fzf > /dev/null 2>&1; then
+    export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:+$FZF_DEFAULT_OPTS }--color=fg:#abb2bf,bg:-1,hl:#e06c75,fg+:#abb2bf,bg+:#3e4451,hl+:#e06c75,info:#61afef,prompt:#98c379,pointer:#c678dd,marker:#e5c07b,spinner:#c678dd,header:#828997,border:#5c6370,gutter:-1"
+
+    _load_fzf_zsh() {
+        local FZF_CTRL_T_COMMAND=
+        source <(fzf --zsh)
+    }
+    _load_fzf_zsh
+    unfunction _load_fzf_zsh
+fi
 
 # GStreamer ships bash completions; load them through zsh's bash bridge.
 _gst_completion_dir="/usr/share/bash-completion/completions"
