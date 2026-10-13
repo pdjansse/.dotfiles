@@ -177,4 +177,18 @@ if [[ -s "$NVM_DIR/nvm.sh" ]]; then
     corepack() { _load_nvm corepack "$@" }
 fi
 
+# bun
+if [[ -x "${BUN_INSTALL:-$HOME/.bun}/bin/bun" ]] || command -v bun > /dev/null 2>&1; then
+    export BUN_INSTALL="${BUN_INSTALL:-$HOME/.bun}"
+    if [[ -d "$BUN_INSTALL/bin" ]]; then
+        case ":$PATH:" in
+            *:"$BUN_INSTALL/bin":*) ;;
+            *) export PATH="$BUN_INSTALL/bin:$PATH" ;;
+        esac
+    fi
+
+    [[ -s "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"
+    alias pi="bunx --bun pi"
+fi
+
 plug "zsh-users/zsh-syntax-highlighting"

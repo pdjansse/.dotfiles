@@ -7,10 +7,14 @@ cursor-style = block
 
 theme = "Atom One Dark"
 
-background-opacity= 0.9
-background-blur=true
+background-opacity = 0.9
+background-blur = true
 
-keybind = F11=toggle_fullscreen
+# GNOME/Mutter makes true Wayland fullscreen windows opaque. Maximizing
+# preserves transparency while filling the available desktop area.
+maximize = true
+gtk-titlebar-hide-when-maximized = true
+keybind = F11=toggle_maximize
 keybind = shift+enter=csi:13;2u
 
 desktop-notifications = false
@@ -19,3 +23,5 @@ clipboard-write = allow
 clipboard-paste-protection = false
 
 app-notifications = no-clipboard-copy
+
+mouse-scroll-multiplier = 1
